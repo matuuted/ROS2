@@ -10,7 +10,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
-    default_robot = 'mycobot_320_m5_2022.urdf'
+    default_robot = 'mycobot_320_m5_2022/mycobot_320_m5_2022.urdf'
 
     robot_arg = DeclareLaunchArgument(
         'robot',
@@ -21,7 +21,6 @@ def generate_launch_description():
     urdf_file = PathJoinSubstitution([
         FindPackageShare('clase4'),
         'robots',
-        'mycobot_320_m5_2022',
         LaunchConfiguration('robot')
     ])
 
