@@ -1,13 +1,30 @@
 <?xml version="1.0"?>
 <sdf version="1.6">
     <world name="mundo_simulacion">
-
+        <!-- Si declaramos al menos 1 plugin, debemos manualmente incorporar los plugins básicos para que gazebo funcione! -->
+        <!-- Físicas -->
+        <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"> </plugin>
+        <!-- SIN ESTO no existe el servicio /world/default/create -->
+        <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"> </plugin>
+        <!-- Necesario para que ros_gz_sim pueda hacer broadcast del scene -->
+        <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"> </plugin>
+        <!-- Recién ahora podemos hablar de poner un sensor u otro plugin en el SDF! -->
+        
+        
         <gravity>0 0 -9.8</gravity>
+
+        <light name="sol" type="directional">
+            <cast_shadows>true</cast_shadows>
+            <pose>0 0 10 0 0 0</pose>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <direction>-0.5 0.1 -0.9</direction>
+        </light>
 
         <include>
             <uri>model://Desk</uri>
             <pose>-0.2 0.0 0.0 0 0 0</pose>
-        </include>
+        </include>        
 
         <model name="suelo">
             <static>true</static>
@@ -42,8 +59,8 @@
                         </plane>
                     </geometry>
                     <material>
-                        <ambient>0.9 0.9 0.9 1</ambient>
-                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <ambient>0.85 0.82 0.78 1</ambient>
+                        <diffuse>0.85 0.82 0.78 1</diffuse>
                     </material>
                 </visual>
             </link>
@@ -104,6 +121,5 @@
 
             </link>
         </model>
-
     </world>
 </sdf>
