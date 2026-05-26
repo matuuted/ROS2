@@ -73,3 +73,62 @@ El objetivo es practicar:
 * cinemática geométrica,
 * publicación de tópicos desde Python,
 * e interacción entre notebooks y ROS2.
+
+
+## Clase 5 - Dinámica y simulación de un robot en Gazebo con ROS2
+
+En esta clase se trabaja sobre un robot definido con XACRO integrado en un mundo de simulación de Gazebo, conectando el modelo con ROS2 mediante `ros_gz_sim` y `ros_gz_bridge`.
+
+### Launch y configuración
+
+Para lanzar la simulación 
+
+```bash
+ros2 launch clase5 sim_launch.py 
+```
+
+* configura variables de entorno para Gazebo y los plugins del simulador
+* por defecto genera el URDF desde `urdf/dp.xacro` y `urdf/dp_params.xacro` 
+* arranca Gazebo con la simulación pausada, con un mundo seleccionable y carga el robot
+* instancia `robot_state_publisher`, el bridge de topics y RViz
+
+También se incluyen archivos de configuración en `clase5/config/`:
+
+* `display.rviz` para visualizar el robot y los tópicos en RViz
+* `gazebo.config` para personalizar la GUI de Gazebo
+
+### Modelos y mundos
+
+La carpeta `urdf/` contiene el robot definido mediante XACRO:
+
+* `dp.xacro` como definición principal del robot
+* `dp_params.xacro` como ejemplos de parametrización
+* `dp_convertido.sdf` como exportación/conversión de modelo para cargar directo en Gazebo
+
+```bash
+gz sim dp_convertido.sdf
+```
+
+La carpeta `worlds/` contiene varios mundos de Gazebo para probar:
+
+* `mundo_vacio.world`
+* `mundo_suelo.world`
+* `mundo_escritorio.world`
+* `mundo_obstaculos.world`
+
+Además, `models/Desk/` aporta recursos de modelo usados en el entorno de simulación.
+
+### Scripts de usuario
+
+Se incluye un script GUI en `scripts/gui_apply_torque.py` que:
+
+* crea una interfaz PyQt5 para aplicar torques a las articulaciones
+* publica comandos de torque en `/model/mi_robot/joint/joint1/cmd_force` y `/model/mi_robot/joint/joint2/cmd_force`
+* permite enviar valores continuos, pulsos temporales y liberar el torque a cero
+
+El objetivo de la clase es modelar y simular sistemas robóticos en ROS2+Gazebo:
+
+* integración de robots XACRO con Gazebo y ROS2,
+* configuración de bridges de topics entre Gazebo y ROS2,
+* acción sobre los joints mediante publicación de torques,
+* visualización simultánea en RViz.
