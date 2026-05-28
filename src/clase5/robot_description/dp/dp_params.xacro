@@ -51,11 +51,11 @@
   <xacro:arg name="q1_max" default="3.14" />                  <!-- límite físico superior eje 1 -->
   <xacro:arg name="q1_min" default="-3.14" />                 <!-- límite físico inferior eje 1 -->
   <xacro:arg name="qp1_max" default="5.0" />                  <!-- límite físico velocidad eje 1 -->
-  <xacro:arg name="tau1_max" default="100.0" />               <!-- límite físico del esfuerzo aplicable en eje 1 -->
+  <xacro:arg name="tau1_max" default="1000.0" />               <!-- límite físico del esfuerzo aplicable en eje 1 -->
   <xacro:arg name="q2_max" default="3.14" />                  <!-- límite físico superior eje 2 -->
   <xacro:arg name="q2_min" default="-3.14" />                 <!-- límite físico inferior eje 2 -->
   <xacro:arg name="qp2_max" default="5.0" />                  <!-- límite físico velocidad eje 2 -->
-  <xacro:arg name="tau2_max" default="100.0" />               <!-- límite físico del esfuerzo aplicable en eje 2 -->
+  <xacro:arg name="tau2_max" default="1000.0" />               <!-- límite físico del esfuerzo aplicable en eje 2 -->
 
   <xacro:arg name="q1_ini" default="1.0" />                   <!-- condición inicial de posición -->
   <xacro:arg name="q2_ini" default="1.0" />                   <!-- condición inicial de posición -->

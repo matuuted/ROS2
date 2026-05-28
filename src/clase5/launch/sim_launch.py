@@ -210,6 +210,7 @@ def generate_launch_description():
         package='clase5',
         executable='gui_apply_torque.py',
         name='gui_apply_torque',
+        parameters=[{'robot_name': 'mi_robot'}],
         output='screen',
     )
 
