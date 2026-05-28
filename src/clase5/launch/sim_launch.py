@@ -63,7 +63,9 @@ def generate_launch_description():
 
     set_resource_path = SetEnvironmentVariable(
         'GZ_SIM_RESOURCE_PATH',
-        os.path.join(pkg_share, 'models')
+        os.path.join(pkg_share, '..') + ':' +  # share/ → Gazebo encuentra clase5/robot_description/...
+        os.path.join(pkg_share, 'models') + ':' +
+        os.environ.get('GZ_SIM_RESOURCE_PATH', '')
     )
 
     # ==========================================================================
@@ -79,7 +81,7 @@ def generate_launch_description():
 
     arg_xacro_file = DeclareLaunchArgument(
         'xacro_file',
-        default_value='dp.xacro',
+        default_value='dp/dp.xacro',
         description='Archivo de definición del robot'
     )
 
@@ -100,7 +102,7 @@ def generate_launch_description():
             FindExecutable(name='xacro'), ' ',
             PathJoinSubstitution([
                 FindPackageShare('clase5'),
-                'urdf',
+                'robot_description',
                 LaunchConfiguration('xacro_file')
             ]),
         ])

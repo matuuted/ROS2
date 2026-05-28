@@ -99,11 +99,13 @@ También se incluyen archivos de configuración en `clase5/config/`:
 
 ### Modelos y mundos
 
-La carpeta `urdf/` contiene el robot definido mediante XACRO:
+La carpeta `robot_description/dp` contiene el doble péndulo robot definido mediante XACRO:
 
 * `dp.xacro` como definición principal del robot
 * `dp_params.xacro` como ejemplos de parametrización
 * `dp_convertido.sdf` como exportación/conversión de modelo para cargar directo en Gazebo
+
+La carpeta `robot_description/mycobot_320_m5_2022` contiene el cobot con sus parámetros de la dinámica cargados
 
 ```bash
 gz sim dp_convertido.sdf

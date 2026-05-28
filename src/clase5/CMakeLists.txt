@@ -17,7 +17,7 @@ install(DIRECTORY launch
 )
 
 install (
-  DIRECTORY urdf
+  DIRECTORY robot_description
   DESTINATION share/${PROJECT_NAME}
 )
 
