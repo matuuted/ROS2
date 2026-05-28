@@ -5,28 +5,66 @@ import rclpy
 from rclpy.node import Node
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QSlider, QPushButton, QHBoxLayout, QLineEdit
 from PyQt5.QtCore import Qt, QTimer
-from std_msgs.msg import Float64MultiArray
 from std_msgs.msg import Float64
+from sensor_msgs.msg import JointState
 
-JOINT_NAMES = ['joint1', 'joint2']
-TORQUE_MIN = -100.0  # Nm
-TORQUE_MAX = 100.0   # Nm
+#JOINT_NAMES = ['joint1', 'joint2']
+TORQUE_MIN = -1000.0  # Nm
+TORQUE_MAX = 1000.0   # Nm
 
-TOPIC_MAP = {
-    'joint1': '/model/mi_robot/joint/joint1/cmd_force',
-    'joint2': '/model/mi_robot/joint/joint2/cmd_force',
-}
+#TOPIC_MAP = {
+#    'joint1': '/model/mi_robot/joint/joint1/cmd_force',
+#    'joint2': '/model/mi_robot/joint/joint2/cmd_force',
+#}
 
+
+# class JointTorqueGUI(Node):
+#     def __init__(self):
+#         super().__init__('joint_torque_gui')
+#         # Un publisher Float64 por joint
+#         self.publishers_ = {
+#             joint: self.create_publisher(Float64, topic, 10)
+#             for joint, topic in TOPIC_MAP.items()
+#         }
+#         self.init_gui()
 
 class JointTorqueGUI(Node):
     def __init__(self):
         super().__init__('joint_torque_gui')
-        # Un publisher Float64 por joint
+        self.joint_names = []
+        self.publishers_ = {}
+        
+        # Esperar el primer mensaje de joint_states para descubrir los joints
+        self.get_logger().info('Esperando joint_states para descubrir joints...')
+        self.discovery_sub = self.create_subscription(
+            JointState,
+            '/joint_states',
+            self.on_joint_states_discovered,
+            10
+        )
+        
+        # Spin hasta tener los joints
+        while not self.joint_names:
+            rclpy.spin_once(self, timeout_sec=0.1)
+        
+        self.destroy_subscription(self.discovery_sub)
+        self.get_logger().info(f'Joints descubiertos: {self.joint_names}')
+        
+        # Crear publishers dinámicamente
+        robot_name = self.declare_parameter('robot_name', 'mi_robot').value
         self.publishers_ = {
-            joint: self.create_publisher(Float64, topic, 10)
-            for joint, topic in TOPIC_MAP.items()
-        }
+            joint: self.create_publisher(
+                Float64,
+                f'/model/{robot_name}/joint/{joint}/cmd_force',
+                10
+            )
+            for joint in self.joint_names
+        }        
         self.init_gui()
+
+    def on_joint_states_discovered(self, msg):
+        if not self.joint_names:
+            self.joint_names = [j for j in msg.name if j != 'fixed']
 
     def init_gui(self):
         self.app = QApplication(sys.argv)
@@ -38,7 +76,7 @@ class JointTorqueGUI(Node):
         self.sliders = {}
         self.text_inputs = {}
 
-        for joint in JOINT_NAMES:
+        for joint in self.joint_names:
             joint_layout = QHBoxLayout()
 
             label = QLabel(f'{joint} [Nm]')
@@ -111,7 +149,7 @@ class JointTorqueGUI(Node):
         return int(1000.0 * (torque - TORQUE_MIN) / (TORQUE_MAX - TORQUE_MIN))
 
     def send_torque_command(self):
-        for joint in JOINT_NAMES:
+        for joint in self.joint_names:
             msg = Float64()
             msg.data = self.slider_to_torque(self.sliders[joint].value())
             self.publishers_[joint].publish(msg)
@@ -127,7 +165,7 @@ class JointTorqueGUI(Node):
         QTimer.singleShot(duration_ms, self.release_torque)
 
     def release_torque(self):
-        for joint in JOINT_NAMES:
+        for joint in self.joint_names:
             msg = Float64()
             msg.data = 0.0
             self.publishers_[joint].publish(msg)
