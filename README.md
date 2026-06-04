@@ -1,3 +1,62 @@
+# Contenedor Docker
+
+El entorno de desarrollo está dockerizado para garantizar que todos trabajen con las mismas dependencias y versiones.
+
+## Obtener la imagen
+
+Opción A — Bajar la imagen lista (recomendado):
+
+```bash
+docker compose pull
+```
+
+Opción B — Construir la imagen localmente (para quienes quieran explorar el Dockerfile o modificar dependencias):
+
+```bash
+docker compose build
+```
+
+## Correr el entorno
+
+Levantá el servicio en background:
+
+```bash
+docker compose up -d dev
+```
+
+Al arrancar, el contenedor automáticamente:
+
+*    Instala las dependencias de los paquetes en src/
+*    Compila el workspace con colcon build
+*    Sourcea el entorno de ROS2
+
+## Abrir una consola
+
+Una vez levantado, abrí una terminal dentro del contenedor:
+
+```bash
+docker compose exec dev bash
+```
+
+Podés abrir tantas terminales como necesites ejecutando el mismo comando desde distintas ventanas, todas comparten el mismo contexto de ROS2.
+Ejemplo — correr una simulación
+
+```bash
+# Terminal 1: lanzar la simulación
+docker compose exec dev bash
+ros2 launch clase6 sim_launch.py
+
+# Terminal 2: interactuar con el sistema mientras corre
+docker compose exec dev bash
+ros2 topic list
+
+Detener el contenedor
+docker compose down
+```
+
+# Contenido de las clases
+Las clases están formuladas como paquetes de ROS2
+
 ## Clase 3 - Sistemas de referencia y TF2
 
 En esta clase se introducen los conceptos básicos de sistemas de referencia y transformaciones en ROS2 utilizando TF2.

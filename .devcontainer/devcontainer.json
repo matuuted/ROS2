@@ -1,0 +1,7 @@
+{
+  "name": "ROS2 Jazzy",
+  "dockerComposeFile": "../docker/docker-compose.yaml",
+  "service": "dev",
+  "workspaceFolder": "/root/ros2_ws",
+  "remoteUser": "root"
+}

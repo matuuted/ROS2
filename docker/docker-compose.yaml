@@ -1,0 +1,26 @@
+services:
+  ros2-desktop:
+    image: ghcr.io/pgonfiuba/ros2-clases:jazzy   # imagen del registry, no buildea por defecto
+    build:                             
+      context: ../
+      dockerfile: ./docker/Dockerfile
+      args:
+        ROS_DISTRO: jazzy
+      target: base
+    stdin_open: true
+    tty: true
+    network_mode: host
+    ipc: host
+    environment:
+      - ROS_DOMAIN_ID=42
+      - DISPLAY=${DISPLAY}
+    devices:
+      - "/dev/dri/:/dev/dri/"
+    volumes:
+      - $HOME/.Xauthority:/root/.Xauthority:ro
+      - ../src:/root/ros2_ws/src         # workspace editable desde el host
+
+  dev:
+    extends: ros2-desktop
+    container_name: ros2_dev
+    command: bash
