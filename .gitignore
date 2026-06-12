@@ -53,3 +53,10 @@ Thumbs.db
 # =========================
 
 *.rviz.bak
+
+# =========================
+# Resolución de TPS
+# =========================
+src/clase4/robot_description/mycobot_320_m5_2022/mycobot_320_m5_2022_gripper.urdf
+src/clase5/robot_description/dp/dp_caos.xacro
+src/clase4/robot_description/scara/scara.urdf
