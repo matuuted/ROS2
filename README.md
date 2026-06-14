@@ -1,6 +1,8 @@
 # Fundamentos de Robótica con ROS2
 Este workspace de ROS2 provee los paquetes para estudiar y practicar los siguientes temas del curso:
 
+- Infraestructura de ROS2 (clase 1)
+- Programación en ROS2 (clase 2)
 - Sistemas de Referencias (clase 3) 
 - Cinemática de Robots (clase 4) 
 - Dinámica de Robots (clase 5)
@@ -38,11 +40,11 @@ Levantá el servicio en background:
 docker compose up -d dev
 ```
 
-Al arrancar, el contenedor automáticamente:
+Al arrancar, el contenedor automáticamente sourcea el entorno de ROS2. Si necesitás compilar ejecutá en la consola:
 
-*    Instala las dependencias de los paquetes en src/
-*    Compila el workspace con colcon build
-*    Sourcea el entorno de ROS2
+```bash
+cd /root/ros2_ws && colcon build --symlink-install
+```
 
 ### Abrir una consola
 
@@ -64,7 +66,7 @@ ros2 launch clase6 sim_launch.py
 docker compose exec dev bash
 ros2 topic list
 
-Detener el contenedor
+#Detener el contenedor
 docker compose down
 ```
 
